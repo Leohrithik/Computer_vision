@@ -1,0 +1,20 @@
+import cv2
+
+# Load the pedestrian cascade classifier
+ped_ccd = cv2.CascadeClassifier(r'C:\Computer_vision\Pedestrians_project\haarcascade_fullbody.xml')
+
+vid = cv2.VideoCapture(r'C:\Users\Hrithik\Dropbox\PC\Downloads\Angry Pedestrian Blocks Cyclist As He Races Through Zebra Crossing.mp4')
+
+while True:
+    isTrue, frame = vid.read()
+    frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    pedestrians = ped_ccd.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=11)
+    for (x, y, w, h) in pedestrians:
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+    cv2.imshow('video', frame)
+    if cv2.waitKey(20) & 0xFF == ord('q'):
+        break
+
+vid.release()
+cv2.destroyAllWindows()
